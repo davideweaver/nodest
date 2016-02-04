@@ -12,7 +12,7 @@
   {
     "type": "MIT",
     "url": "https://github.com/davideweaver/nodest/blob/master/LICENSE"
-  },
+  }],
   "devDependencies": {
     "jsdoc": "^3.4.0",
     "minami": "^1.1.1"
