@@ -295,7 +295,7 @@ The other collection will be **.vars.splats** which is an array of values matchi
 
 Using the routes defined above, <code>/posts/show/1.json</code> would result in...
 
-```json
+```javascript
 {
   params: {
     controller: 'posts',
@@ -309,7 +309,7 @@ Using the routes defined above, <code>/posts/show/1.json</code> would result in.
 
 And <code>/admin/reports</code> would result in...
 
-```json
+```javascript
 {
   params: {},
   splats: [ "reports" ]
