@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>template.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">template.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+/**
+* The current template, bound to specific params and data (passed on to partials)
+* @class
+*/
+class ActiveTemplate {
+
+	/**
+	* @param {Nodal.Template} template The parent template
+	* @param {Object} params The parameters for the template
+	* @param {Object} data The data for the template
+	*/
+	constructor(template, params, data) {
+		this.template = template;
+		this._params = params;
+		this._data = data;
+	}
+
+	/**
+	* Render the template based on this ActiveTemplate's params and data
+	* @return {string}
+	*/
+	generate() {
+		if (this.template._fn)
+			return this.template._fn.call(this, this._params, this._data);
+		return "&lt;!-- MISSING TEMPLATE -->";
+	}
+
+	/**
+	* Renders another template template based upon this ActiveTemplate's params and data
+	* @return {string}
+	*/
+	partial(name) {
+		return this.template.controller.template(name).generate(this._params, this._data);
+	}
+
+	/**
+	* Renders another raw template template based upon this ActiveTemplate's params and data
+	* @return {string} name The raw partial to render
+	*/
+	rawPartial(name) {
+		return this.template.controller.rawTemplate(name).generate(this._params, this._data);
+	}
+
+	/**
+	* Renders another template template based upon this ActiveTemplate's params and data
+	* @return {string}
+	*/
+	child() {
+			return this.template.controller.template(this.template._children).generate(this._params, this._data)
+	}
+
+}
+
+/**
+* Light wrapper around template functions, creates ActiveTemplates from provided params and data
+* @class
+*/
+class Template {
+
+	/**
+	* @param {Nodest.Application} app The application
+	* @param {function} fn The method to render your template with
+	* @param {string} children Remaining children template in heirarchy
+	*/
+	constructor(app, controller, fn, children) {
+		this._app = app;
+		this.controller = controller;
+		this._fn = fn;
+		this._children = children;
+	}
+
+	/**
+	* Generates (renders) your template by creating an ActiveTemplate instance
+	* @param {Object} params The parameters for the template
+	* @param {Object} data The data for the template
+	* @return {ActiveTemplate}
+	*/
+	generate(params, data) {
+		params = params || {};
+		data = data || {};
+
+		let templateData = this._app.templates.data;
+
+		Object.keys(templateData)
+			.filter(k => !data.hasOwnProperty(k))
+			.forEach(k => data[k] = templateData[k]);
+
+		return new ActiveTemplate(this, params, data).generate();
+	}
+
+	get valid() {
+		return this._fn != null;
+	}
+
+}
+
+module.exports = Template;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

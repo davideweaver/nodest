@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>application.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">application.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const Nodest = require("nodest");
+const Url = require("url");
+const Template = require('./template.js');
+const Log = require("./log");
+const RouterManager = require("./routermanager");
+const KoaCompose = require("koa-compose");
+
+/**
+  * Core Nodest Application. Contains globally-applicable logic, methods and properties. Accessible by reference in any Controller or Space.
+	* Derive your own class from this and launch it using the Bootstrapper.
+  * @class
+	* @param {Nodest.PathContext} pathContext Path object
+  */
+class Application {
+	constructor(pathContext, extensions) {
+		Object.defineProperty(this, "pathContext", {enumerable: true, value: pathContext});
+
+		// load extensions
+		this.extensions = new Nodest.ExtensionManager(this, extensions);
+
+		// call internal init
+		this.__init();
+	}
+	
+	__init() {
+
+		// call extensions
+		this.extensions.emit("boot");
+
+		// init template manager
+		this.templates = new Nodest.TemplateManager(this);
+
+		// init log
+		this.log = Log.scoped("app");
+		
+		// setup web service (based on koa)
+		this.koa = (new Nodest.WebService()).create();
+		
+		// set signed cookie keys
+		this.koa.keys = ['im a newer secret', 'i like turtle'];
+		
+		// setup route manager with default router
+		this.routers = new RouterManager(this);
+		this.routers.add("noprefix", "", true);
+		
+		// handle errors (before app initializes itself)
+		this.koa.use(function *(next) {
+			try {
+				yield next;
+				if ((this.status &lt; 200 || this.status > 399) &amp;&amp; !this.res._hasBody &amp;&amp; this.controller) {
+					return this.controller.error("", this.status, "");
+				}
+			} catch (err) {
+				if (this.controller) {
+					return this.controller.error(err.message, err.status, err.stack);
+				}
+				throw err;
+			}
+		});
+	
+		// call extensions
+		this.extensions.emit("pre-init");
+	
+		// let subclass handle init
+		this.init();
+		
+		// call extensions
+		this.extensions.emit("post-init");
+	}
+	
+	/**
+	* App init method. Override to provide initialization for the application.
+	*/
+	init() {
+	}
+
+	/**
+	* Causes the application to listen to HTTP requests on the given port. Effectively starts the application.
+	* @param {int} port Port for server to listen for requests
+	*/
+	listen(port) {
+
+		// handle routes (after app initializes itself)
+		var app = this;
+		this.koa.use(function *(next){
+			let pathname = Url.parse(this.url, true).pathname;
+			var match = app.routers.match(pathname);
+			if (match) {
+				yield match.activate(app, this);
+			}
+			yield next;
+		});
+		
+		// listen on port
+		this.koa.listen(port);
+		this.log.info("app listening: port " + port);
+		
+		// call started method
+		this.started();
+	}
+	
+	started() {
+	}
+
+	/**
+	* The current working directory path.
+	* @return {string}
+	*/
+	extend(Extension, options) {
+		return this.extensions.add(Extension, options);
+	}
+	
+	/**
+	* The current working directory path.
+	* @return {string}
+	*/
+	cwd() {
+		return process.cwd();
+	}
+
+	/**
+	* Use middleware as derived from Nodest.Middleware
+	* @param {string|Nodest.Middleware} middleware The path or class of middleware to use.
+	*/
+	use(middleware) {		
+		var Middleware = null;
+		if (typeof middleware == "string") {
+			
+			Middleware = require(this.pathContext.resolve(middleware));
+		}
+		else Middleware = middleware;
+		
+		var mw = new Middleware(this);
+		var r = mw.exec();
+		if (Array.isArray(r)) {
+			this.koa.use(KoaCompose(r));
+		}
+		else this.koa.use(r);
+	}
+
+	/**
+	* Sets up a controller route for the application
+	* @param {string} path The path to match for the route
+	* @param {string|Nodest.Controller} controller The Controller to dispatch. Can be a Nodest.Controller derived class or a path to a file that exports a controller.
+	*/
+	route(path, controller) {
+		this.routers.route(path, controller, this.pathContext);
+	}
+
+	/**
+	* Sets up a controller route for the application
+	* @param {string} routerName name of router
+	* @param {string} path The path to match for the route
+	* @param {string|Nodest.Controller} controller The Controller to dispatch. Can be a Nodest.Controller derived class or a path to a file that exports a controller.
+	*/
+	routeFor(routerName, path, controller) {
+		this.routers.route(path, controller, this.pathContext);
+	}
+	
+	/**
+	* Removes a controller route for the application
+	* @param {string} path The path to match for the route
+	*/
+	deroute(path) {
+		this.routers.deroute(path);
+	}
+}
+
+module.exports = Application;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

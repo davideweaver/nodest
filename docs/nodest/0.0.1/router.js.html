@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>router.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">router.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const Nodest = require("nodest");
+const Url = require("url");
+const Querystring = require("querystring");
+const Routes = require("routes");
+const Log = require("./log").scoped("router");
+const Controller = require('./controller');
+
+/**
+* Routes are what the router uses to actually instantiate Controllers
+* @class
+*/
+class Route {
+
+	/**
+	* @param {class Nodal.Controller} controller The controller class to instantiate when a route is activated
+	* @param {Nodest.PathContext} pathContext Path object
+	*/
+	constructor(controller, pathContext) {
+		if (!Controller.prototype.isPrototypeOf(controller.prototype)) {
+			throw new Error('Route requires a valid Controller');
+		}
+		this.controller = controller;
+		this.pathContext = pathContext;
+	}
+}
+
+/**
+* Object returned by a match on the router. Activates the controller for the route.
+* @class
+*/
+class RouteMatch {
+	
+	 constructor(app, result) {
+		 this.app = app;
+		 this.result = result;
+		 this.route = result.fn;
+	 }
+	 
+	/**
+	* Parse query parameters from a query string. Matches arrays and object query param definitions. (obj[a]=1&amp;obj[b]=2)
+	* @param {string} query The query string to match
+	* @return {Object} The parsed object
+	*/
+	parseQueryParameters(query) {
+
+		let obj = {};
+
+		Object.keys(query).forEach(function(key) {
+
+			let newKey, subKey;
+			let value = query[key];
+			let match = key.match(/(.*)\[(.*)\]$/);
+
+			if (match) {
+
+				newKey = match[1];
+				subKey = match[2];
+
+				if (subKey) {
+					obj[newKey] = obj[newKey] || {};
+					obj[newKey][subKey] = value;
+					return;
+				}
+
+				value = !(value instanceof Array) ? [value] : value;
+
+				obj[newKey] = value;
+				return;
+
+			}
+
+			obj[key] = value;
+			return;
+
+		});
+
+		return obj;
+
+	}
+
+	/**
+	* Activate the route once you know it has been hit.
+	* @param {Nodest.Application} app The Nodest.Application instance assocatied with this route / router
+	* @param {Koa.Context} ctx
+	*/
+	* activate(app, ctx) {
+		
+		let urlParts = Url.parse(ctx.url, true);
+
+		let query = this.parseQueryParameters(urlParts.query);
+		
+		if (this.result.params.id === undefined)
+			this.result.params.id = "";
+		
+		let headers = {};
+		Object.keys(ctx.request.headers).forEach(function(key) {
+			headers[key] = ctx.request.headers[key];
+		});
+
+		let locals = {
+			path: urlParts.path,
+			pathname: urlParts.pathname,
+			href: urlParts.href,
+			host: urlParts.host,
+			hostname: urlParts.hostname,
+			params: this.result.params,
+			splats: this.result.splats,
+			port: urlParts.port,
+			protocol: urlParts.protocol,
+			search: urlParts.search,
+			route: this.result.route,
+			query: query,
+			ip_address: headers['x-forwarded-for'] || ctx.req.connection.remoteAddress,
+			headers: headers
+		};
+			
+		let controller = new this.route.controller(
+			this.route.pathContext,
+			ctx,
+			app,
+			locals
+		);
+		
+		this.app.extensions.emit("controller-create", controller);
+		
+		ctx.controller = controller;
+		
+		let method = ({
+			'GET': ['index', 'get'],
+			'PUT': ['put', 'update'],
+			'POST': ['post', 'post'],
+			'DELETE': ['del', 'del'],
+			'OPTIONS': ['options', 'options']
+		}[ctx.request.method] || ['index', 'get'])[(this.result.params.id != "") | 0];
+			
+		Log.debug("routing " + this.route.controller.name + ":" + method);
+		
+		yield controller.run(method);
+	}
+}
+
+// default controller
+class DefaultController extends Nodest.Controller {
+	get() {
+		this.ctx.throw(404);
+	}
+}
+
+/**
+* Delegates HTTP.ClientRequest to specified routes, which dispatch Controllers.
+* see: https://www.npmjs.com/package/routes
+* @class
+*/
+class Router {
+
+	constructor(app) {
+		this.app = app;
+		this.routes = Routes();	
+		
+		// create a default match
+		this.defaultMatch = new RouteMatch(app, { 
+			fn: new Route(DefaultController, new Nodest.PathContext("default", __dirname)),
+			route: "",
+			params: {},
+			splats: []
+		});	
+	}
+
+	/**
+	* Creates a route with a specified regex that dispatches a given Controller
+	* @param {string} path The path to match for the route
+	* @param {string|Nodest.Controller} controller The Controller to dispatch. Can be a Nodest.Controller derived class or a path to a file that exports a controller.
+	* @param {Nodest.PathContext} pathContext Object used to resolve paths
+	*/
+	route(path, controller, pathContext) {
+		var Controller = null;
+		if (typeof controller == "string") {
+			
+			// figure out the controller path using the pathContext
+			var controllerPath = pathContext.resolve(controller);
+			Controller = require(controllerPath);
+			
+			// we also need to create a new PathContext relative
+			// to the new controller's path
+			pathContext = new Nodest.PathContext(pathContext.name, controllerPath);
+		}
+		else Controller = controller;
+		
+		var route = new Route(Controller, pathContext);
+		
+		this.routes.addRoute(path, route);
+	}
+
+	/**
+	* Removes a controller route
+	* @param {string} path The path to match for the route
+	*/
+	deroute(path) {
+		this.routes.removeRoute(path);
+	}
+
+	/**
+	* Finds the appropriate route given a pathname.
+	* @param {string} pathname The request pathname
+	* @return {RouteMatch} The route instance that matches the pathname
+	*/
+	match(pathname) {
+		var m = this.routes.match(pathname);
+		if (m)
+			return new RouteMatch(this.app, m);
+		return this.defaultMatch;
+	}
+
+};
+
+module.exports = Router;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

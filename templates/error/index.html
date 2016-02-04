@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTTP Error {{=data.status}}</title>
+    <style>
+    </style>
+  </head>
+  <body>
+		<h1>HTTP Error {{=data.status}}</h1>
+		<h3>{{=data.msg}}</h3>
+		{{? data.expose }}
+		<b>DETAILS</b><br>
+		<pre>{{=data.details}}</pre>
+		<b>STACK TRACE</b><br>
+    <pre>{{=data.stack}}</pre>
+		<b>SERVER VARS</b><br>
+    <pre>{{=JSON.stringify(vars, null, " ")}}</pre>
+		{{?}}
+  </body>
+</html>

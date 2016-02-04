@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>controller.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">controller.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const Url = require("url");
+const Filesystem = require("fs");
+const Nodest = require("nodest");
+const Template = require("./template");
+const API = require("./api");
+const Dot = require("dot");
+const Statuses = require("statuses");
+
+// For templates
+Dot.templateSettings.varname = "vars, data";
+Dot.templateSettings.strip = false;
+
+/**
+* A new Controller instance is created by the Router when its associated route is hit, handles all business logic
+* @class
+*/
+class Controller {
+
+	/**
+ 	* @param {Nodest.PathContext} Nodest PathContext 
+	* @param {Koa.Context} koa Context
+	* @param {Nodal.Application} app Parent application object
+	* @param {Object} vars HTTP request vars containing: location (route), query (GET), body (POST), and id values
+	*/
+	constructor(pathContext, ctx, app, vars) {
+
+		this._initializeTime = (new Date()).valueOf();
+		this._ctx = ctx;
+		this._path = Url.parse(this._ctx.url, true).pathname;
+		this._status = null;
+		this._headers = {};
+		this._log = pathContext.log;
+
+		// init templates
+		this._templates = {
+			'!': new Template(app, this, null)
+		};
+		this._templateData = {};
+
+		Object.defineProperty(this, "pathContext", {enumerable: true, value: pathContext});
+		Object.defineProperty(this, "app", {enumerable: true, value: app});
+		Object.defineProperty(this, "vars", {enumerable: true, value: vars});
+	}
+
+	isGenerator(fn) {
+    return fn.constructor.name === 'GeneratorFunction';
+	}
+
+	callbackFunc(fn, thisArg) {
+		return new Promise((resolve, reject) => {
+			fn.call(thisArg, result => resolve(result));
+		});
+	}
+	
+	/**
+	* Run the given method
+	* @private
+	* @param {method} value HTTP method to run
+	*/
+	* run(method) {
+		var fn = this[method];
+		
+		if (this.isGenerator(fn)) { 
+			// generator func, yield to it
+			yield fn.call(this);
+		}
+		else if (fn.length == 1) {
+			// expects a callback
+			yield this.callbackFunc(fn, this);
+		}
+		else {
+			fn.call(this);
+		}
+	}
+	
+	/**
+	* The Koa Context object
+	* @return {koa.Context}
+	*/
+	get ctx() {
+		return this._ctx;
+	}
+	
+	/**
+	* The log object
+	* @return {Nodest.Log}
+	*/
+	get log() {
+		return this._log;
+	}
+
+	/**
+	* The pathname used by the router to instantiate this controller
+	* @return {string}
+	*/
+	path() {
+		return this._path;
+	}
+
+	/**
+	* The current HTTP status code expected to be used by the outgoing http.ServerResponse
+	* @return {number}
+	*/
+	getStatus() {
+		return this._status;
+	}
+
+	/**
+	* Set the HTTP status code to be used by the outgoing http.ServerResponse
+	* @param {number} value Outgoing HTTP status code
+	* @return {number}
+	*/
+	status(value) {
+		this._status = value | 0;
+		return this._status;
+	}
+
+	/**
+	* Send an http.ServerResponse indicating there was an Internal Server Error (500)
+	* @param {string} msg Error message to send
+	* @param {Object} details Any additional details for the error (must be serializable)
+	* @return {boolean}
+	*/
+	error(msg, status, stack) {
+		status = status || 500;
+		var err = Statuses[status];
+		this.status(status);
+		
+		if (typeof msg === 'object') {
+			msg = JSON.stringify(msg);	
+		}
+		
+		this.log.error(msg);
+		
+		var template = this.template("error/" + status + ".html");
+		if (!template.valid) 
+			template = this.template("error/index.html");
+		
+		this.render(
+			template.generate(
+				this.vars,
+				{
+					status: status,
+					msg: err,
+					details: msg,
+					stack: stack || "no stack",
+					config: Nodest.config,
+					expose: Nodest.settings.errors.expose
+				}
+			)
+		);
+		
+		return true;
+	}
+		
+	/**
+	* Using API formatting, generate an error or respond with model / object data.
+	* @param {Error|Object|Array|Nodal.Model|Nodal.ModelArray} data Object to be formatted for API response
+	* @param {optional Function} next Callback function to call if needed.
+	* @return {boolean}
+	*/
+	respond(data, next) {
+		return this.render(data, next);
+	}
+	
+	/**
+	* Retrieves the template matching the provided name. Lazy loads new templates from disk, otherwise caches.
+	* @param {string} templates List of heirarchy of templates (each a full path in the the app/templates directory).
+	* @return {Nodest.Template} The template instance
+	*/
+	template() {
+
+		let templates = Array.prototype.slice.call(arguments)
+
+		try {
+			// Loop the template hierarchy 
+			let templateContents = templates.map((name) => {
+				return this.app.templates.getTemplate(name, false, this.pathContext);
+			});
+			
+			// return the first templates contents
+			if (templateContents[0]) {
+				return new Template(
+					this.app,
+					this,
+					templateContents[0],
+					templates.slice(1).join(',')
+				);
+			}
+		} 
+		catch(e) {
+			this.log.error(e);
+		}
+
+		this.log.debug("Could not load template: " + templates[0]);
+
+		return this.app.templates.find("!");
+	}
+	
+	/**
+	* Retrieves a "raw" template (i.e. just an HTML string, no template engine required.)
+	* @param {string} name The traw emplate name (full path in the the app/templates directory).
+	* @return {Nodal.Template} The template instance
+	*/
+	rawTemplate(name) {
+
+		let contents = this.app.templates.getTemplate(name, true);
+
+		try {
+
+			return new Template(
+				this,
+				function() { return contents; }
+			);
+
+		} catch(e) {
+
+			this.log.error(e);
+			this.log.error("Could not load raw template " + name);
+		}
+
+		return this.app.templates.find("!");
+	}
+	
+	/**
+	* Send an http.ServerResponse back to the client with data to render
+	* @param {string|Buffer|Object} data Data to be returned to the client. Buffers will be written as binary, Objects will be JSON-serialized, and strings will be output as-is.
+	* @return {boolean}
+	*/
+	render(data, next) {
+
+		if (!data) { 
+			data = ""; 
+		}
+
+		if (data instanceof Buffer) {
+			this.ctx.set("Content-Type", "text/html");
+			//this.getHeader('Content-Type') || this.setHeader('Content-Type', 'text/html');
+		} 
+		else if (typeof data === 'object') {
+			this.ctx.set("Content-Type", "application/json");
+			//this.getHeader('Content-Type') || this.setHeader('Content-Type', 'application/json');
+			try {
+				data = JSON.stringify(data);
+			} 
+			catch(e) {
+				data = {};
+			}
+		} 
+		else if (data != "") {
+			//this.getHeader('Content-Type') || this.setHeader('Content-Type', 'text/html');
+			this.ctx.set("Content-Type", "text/html");
+			data = data + '';
+		}
+
+		this.getStatus() || this.status(200);
+
+		if (data instanceof Buffer) {
+			this.write(data, 'binary');
+		} else {
+			this.write(data);
+		}
+
+		if (next)
+			next();
+
+		return true;
+	}
+	
+	/**
+	* Use Controller#render instead (which calls this method). Ends the http.ServerResponse by sending data.
+	* @param {string|Buffer} data Response to send to client
+	* @return {boolean}
+	*/
+	write(data) {
+		
+		this._ctx.response.status = this._status;
+		this._ctx.response.set(this._headers);
+		this._ctx.body = data;
+
+		this._log.debug(this._ctx.method + " " + this._ctx.url + " returned " + this._ctx.status + " in " + ((new Date()).valueOf() - this._initializeTime) + "ms");
+
+		return true;
+	}
+
+	/**
+	* Method called when a route is hit with a GET request and no "id" parameter. Intended to be overwritten when inherited. Defaults to calling Controller#get.
+	*/
+	index() {
+		this.get.apply(this, arguments);
+	}
+
+	/**
+	* Method called when a route is hit with a PUT request. Intended to be overwritten when inherited. Defaults to calling Controller#put.
+	*/
+	update() {
+		this.put.apply(this, arguments);
+	}
+
+	/**
+	* Method called when a route is hit with a GET request, if not first intercepted by custom Controller#index or Controller#show methods. Intended to be overwritten when inherited.
+	*/
+	get() {
+		this.error("", 501);
+	}
+
+	/**
+	* Method called when a route is hit with a PUT request, if not first intercepted by custom Controller#update method. Intended to be overwritten when inherited.
+	*/
+	put() {
+		this.error("", 501);
+	}
+
+	/**
+	* Method called when a route is hit with a POST request, if not first intercepted by custom Controller#create method. Intended to be overwritten when inherited.
+	*/
+	post() {
+		this.error("", 501);
+	}
+
+	/**
+	* Method called when a route is hit with a DELETE request, if not first intercepted by custom Controller#destroy method. Intended to be overwritten when inherited.
+	*/
+	del() {
+		this.error("", 501);
+	}
+
+	/**
+	* Method called when a route is hit with an OPTIONS request. Typically unused, exists for CORS purposes.
+	*/
+	options() {
+		this.status(200);
+		this.render();
+	}
+}
+
+module.exports = Controller;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

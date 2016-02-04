@@ -1,0 +1,27 @@
+{
+  "name": "nodest",
+  "version": "0.0.1",
+  "description": "NodeJS framework built on Koa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
+  },
+  "author": "Dave Weaver <dave@nolinio.com> (http://nolinio.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdoc": "^3.4.0",
+    "minami": "^1.1.1"
+  },
+  "dependencies": {
+    "cli-color": "^1.1.0",
+    "config": "^1.19.0",
+    "dot": "^1.0.3",
+    "koa": "^1.1.2",
+    "koa-compose": "^2.3.0",
+    "koa-static-folder": "^0.1.6",
+    "merge": "^1.2.0",
+    "routes": "^2.1.0",
+    "statuses": "^1.2.1"
+  }
+}

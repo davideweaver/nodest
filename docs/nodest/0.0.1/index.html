@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>nodest</h1><p>Minimalist framework on top of <a href="https://github.com/koajs/koa">koa</a></p>
+<ul>
+<li>Simple application spinup</li>
+<li>Express-style routing to controllers.</li>
+<li>Controllers for API and templated HTML.</li>
+<li>Controller support for callbacks and generators.</li>
+<li>JSON configuration.</li>
+<li>Logging.</li>
+<li>Multiple HTTP services.</li>
+<li>Multiple routers.</li>
+</ul>
+<h2>Installation</h2><p>Install using <a href="https://www.npmjs.org/">npm</a>:</p>
+<pre class="prettyprint source lang-sh"><code>$ npm install nodest</code></pre><h2>Basic Usage</h2><p>The following demonstrates a simple, HelloWorld Nodest app. </p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+
+class Controller extends Nodest.Controller {
+    index() {
+        this.ctx.body = &quot;HelloWorld&quot;;
+    }
+}
+
+class App extends Nodest.Application {
+    init() {
+        this.route(&quot;/&quot;, Controller);
+    }
+}
+
+new Nodest.Bootstrapper(App).start((app) => { app.listen(3000) });</code></pre><p>Using ES6 class syntax, a class derived from <strong>Nodest.Application</strong> is defined. It's <strong>init()</strong> method is overriden to define a route for <strong>&quot;/&quot;</strong> to a class derived from <strong>Nodest.Controller</strong>.
+The controller override method <strong>index</strong> which will be called automatically when the route is matched on the request.
+The <strong>index()</strong> method uses Koa's context to set the body of the response.
+The <strong>Nodest.Bootstrapper</strong> is used to start the app on port 3000.</p>
+<h2>Nodest and Koa</h2><p>One of the goals for Nodest was to provide a very minimal layer around Koa. 
+Nodest provides Koa access points so that you can use the Koa classes as you normally would but in a slightly more organized (in our opinion) way.
+Nodest accomplishes that by defining small wrapper classes around the Koa classes.</p>
+<p>The Nodest.Application class has a <strong>.koa</strong> property that represents the <a href="https://github.com/koajs/koa/blob/master/docs/api/index.md">Koa.Application</a> class. 
+The Nodest.Controller classes have a <strong>.ctx</strong> property that represents the <a href="https://github.com/koajs/koa/blob/master/docs/api/context.md">Koa.Context</a> class.
+Using these properties you can configure your app and respond to HTTP requests like you would normally do in Koa.</p>
+<p>As seen in the basic example above, we use the <strong>.ctx</strong> property of our controller to respond to the HTTP request with &quot;HelloWorld&quot;.</p>
+<h2>Reference Classes in Separate Files</h2><p>The basic usage example above references the App and Controller classes directly. You could also import the classes from another file.
+Nodest also supports a shortcut for referencing those classes. You can reference the App or Controllers exported from another file using a path instead of a class reference.
+This lets you organize your project by breaking up classes into separate files, yet reduces the amount of code required to do so.
+For example, create a new file...</p>
+<p><strong>controller.js</strong></p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+
+class Controller extends Nodest.Controller {
+    index() {
+        this.ctx.body = &quot;HelloWorld&quot;;
+    }
+}
+
+module.exports = Controller;</code></pre><p>and reference like...</p>
+<pre class="prettyprint source lang-javascript"><code>const Controller = require(&quot;./controller.js&quot;);
+...
+this.route(&quot;/&quot;, Controller)</code></pre><p>or simply...</p>
+<pre class="prettyprint source lang-javascript"><code>this.route(&quot;/&quot;, &quot;./controller.js&quot;)</code></pre><h2>Controllers</h2><p>Nodest.Controllers are your primary way of interacting with HTTP requests. 
+Just create a route in you application that points to a controller. When a request comes in with a path matching your route, your controller will be created and called.</p>
+<p>As shown in the basic usage example, you can override the <strong>index()</strong> method of your controller and interact with the Koa.Context class.
+Nodest also provides some built-in functionality that may make your job a little easier.</p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+
+class Controller extends Nodest.Controller {
+    index() {
+        this.ctx.body = &quot;HelloWorld&quot;;
+    }
+}
+
+module.exports = Controller;</code></pre><h3>Controller Types</h3><p>Nodest provides two controller base classes. 
+The main controller class that you derive your controllers from is Nodest.Controller. 
+Use Nodest.Controller as a general way of returning HTML to the client.</p>
+<p>There is also the Nodest.ApiController class that should be used for implementing API-style responses, typically using JSON to respond to a non-browser client.
+This controller will handle things slightly different if it knows the client is not a browser. 
+For example, errors that are thrown will be formatted as a JSON message instead of HTML content.</p>
+<h3>Response Helpers</h3><p>As mentioned before, you are free to use the <strong>.ctx</strong> property to respond to the HTTP request.
+Nodest also has some methods to respond to requests.</p>
+<p><strong>HTML Rendering with Templates</strong></p>
+<p>Nodest makes it pretty easy to render HTML using HTML templates. 
+This example won't go into the details of how templates work (see HTML Templating), but it will show a useful example.</p>
+<p>The <strong>.render()</strong> method sends back HTML to the client, similar to <code>this.ctx.body = &quot;HelloWorld&quot;;</code>. 
+This example uses the <strong>.template()</strong> method to load and generate HTML from *.html files. 
+Shown here is a hierarchy of templates, referenced in the template as <strong>.child()</strong>. </p>
+<pre class="prettyprint source lang-javascript"><code>class ExampleController extends Nodest.Controller {
+  index() {
+    this.render(
+      this.template(&quot;layout.html&quot;, &quot;index.html&quot;)
+        .generate(this.params, {
+          title: &quot;My Page&quot;,
+          body: &quot;This is my first post&quot;
+        })
+    );
+  }
+}</code></pre><p><strong>layout.html</strong></p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;title>{{=data.title}}&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;div class=&quot;container&quot;>
+      {{=this.child()}}
+    &lt;/div>
+  &lt;/body>
+&lt;/html></code></pre><p><strong>index.html</strong></p>
+<pre class="prettyprint source lang-html"><code>&lt;div>
+  &lt;h1>{{=data.title}}&lt;/h1>
+  &lt;p>{{=data.body}}&lt;/p>
+&lt;/div></code></pre><p><strong>JSON Responses</strong></p>
+<p>If your controller is handling an API-style request you'll want to send back JSON.
+Use the <strong>respond()</strong> method for doing that and it will serialize correctly with the appropriate Content-Type.
+Notice we are using the Nodest.ApiControllerclass.</p>
+<pre class="prettyprint source lang-javascript"><code>class ExampleController extends Nodest.ApiController {
+  get() {
+    this.respond({
+      id: 102,
+      name: &quot;Joe Smith&quot;,
+      email: &quot;joe@acme.com&quot;    
+    });
+  }
+}</code></pre><h3>Mapped Controller Methods</h3><p>Nodest will attempt to map the current HTTP Method to methods of your controller class. 
+For example, when a request is received with the GET method, the <strong>index()</strong> method will be called on your controller.
+If a DELETE method is received the <strong>del()</strong> method will be called.</p>
+<p><strong>NOTE</strong> In addition to Method mapping, the route will be inspected for the <strong>:id</strong> token. 
+If the <strong>:id</strong> token exists in your route and resolved in the current request, the method called on your controller will be different.</p>
+<table>
+<thead>
+<tr>
+<th>HTTP METHOD</th>
+<th>:id Resolved</th>
+<th>Controller Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>No</td>
+<td>Controller.index()</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>Yes</td>
+<td>Controller.get()</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>No</td>
+<td>Controller.post()</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Yes</td>
+<td>Controller.post()</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>No</td>
+<td>Controller.put()</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>Yes</td>
+<td>Controller.update()</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>No</td>
+<td>Controller.del()</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>Yes</td>
+<td>Controller.del()</td>
+</tr>
+</tbody>
+</table>
+<p>If the <strong>:id</strong> token is resolved then the value for that id can be found in the <strong>this.vars.params.id</strong> property of the controller.
+Here is a complete REST-style example using mapped methods.</p>
+<p><strong>NOTE</strong> This example uses ES6 generators toallow us to yiled on our async Contacts API.</p>
+<pre class="prettyprint source lang-javascript"><code>const Contacts = require(&quot;./lib/contacts.es6&quot;);
+
+class ContactsController extends Nodest.ApiController {
+
+  * index() {
+    this.respond(yield Contacts.all());
+  }
+
+  * get() {
+    this.respond(yield Contacts.find(this.vars.params.id));
+  }
+
+  * post() {
+    var contact = Contacts.fromBody(this.ctx);
+    this.respond(yield Contacts.add(contact));
+  }
+
+  * update() {
+    var contact = Contacts.fromBody(this.ctx);
+    this.respond(yield Contacts.update(this.vars.params.id, contact));
+  }
+
+  * del() {
+    yield Contacts.del(this.vars.params.id));
+    this.ctx.status(204);
+  }
+}</code></pre><h3>Async Controller Methods</h3><p>As you can see in the previous example, we use ES6 Generators to handle responses using our async Contacts API.
+By adding the <strong>*</strong> in front of our built-in methods, Nodest knows how to call them.
+Nodest also supports traditional callback-style APIs. 
+Just provide a <strong>next</strong> argument in the built-in methods like this example.</p>
+<pre class="prettyprint source lang-javascript"><code>const Contacts = require(&quot;./lib/contacts&quot;);
+
+class ContactsController extends Nodest.ApiController {
+
+  index(next) {
+    this.respond(Contacts.all(next));
+  }
+}</code></pre><h2>Routes</h2><p>Routing in Nodest is handled by the <a href="https://www.npmjs.com/package/routes">routes</a> module.
+It's pretty similar to routes in Express.</p>
+<pre class="prettyprint source lang-javascript"><code>this.route(&quot;/articles/:title?&quot;, ArticleController);
+this.route(&quot;/admin/*?&quot;, auth);
+this.route(&quot;/:controller/:action/:id.:format?&quot;, GenericController);</code></pre><p>Besides routing the request to the correct controller, these routes will create two collections under the <strong>Controller.vars</strong> property.
+One collection will be <strong>.vars.params</strong> which will contain each token and it's corresponding value.
+The other collection will be <strong>.vars.splats</strong> which is an array of values matching the wildcard portion of the route.</p>
+<p>Using the routes defined above, <code>/posts/show/1.json</code> would result in...</p>
+<pre class="prettyprint source lang-json"><code>{
+  params: {
+    controller: 'posts',
+    action: 'show',
+    id: '1',
+    format: 'json'
+  },
+  splats: []
+}</code></pre><p>And <code>/admin/reports</code> would result in...</p>
+<pre class="prettyprint source lang-json"><code>{
+  params: {},
+  splats: [ &quot;reports&quot; ]
+}</code></pre><p>See https://www.npmjs.com/package/routes for more information on routing.</p>
+<h2>Error Handling</h2><p>TDB</p>
+<h2>HTML Templates</h2><p>TBD</p>
+<h2>Configuration</h2><p>Nodest supports configuration using the <a href="https://www.npmjs.com/package/config">config</a> module.
+Just create a <strong>config</strong> directory at the root of your application and create a file in there.
+This file contains JSON that can be easily referenced from within your app.</p>
+<p><strong>config/default.json</strong></p>
+<pre class="prettyprint source lang-javascript"><code>{
+  &quot;server&quot;: {
+    &quot;port&quot;: 3000,
+    &quot;static&quot;: &quot;./static&quot;,
+    &quot;verbose&quot;: true
+  }
+}</code></pre><p>From within your app you have access to that configuration using the <strong>Nodest</strong> namespace.</p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+...
+app.listen(Nodest.config.server.port);</code></pre><p>You can also override your config for your production environment.</p>
+<p><strong>config/production.json</strong></p>
+<pre class="prettyprint source lang-javascript"><code>{
+  &quot;server&quot;: {
+    &quot;port&quot;: 80,
+    &quot;verbose&quot;: false
+  }
+}</code></pre><p>Use the <strong>NODE_ENV</strong> environment variable to control which configuration gets loaded.</p>
+<pre class="prettyprint source lang-sh"><code>$ export NODE_ENV=production
+$ node index.js</code></pre><p>Now when you access those variables from within your app, &quot;port&quot; and &quot;verbose&quot; have a new value while remains &quot;static&quot; unchanged.</p>
+<h3>Logging</h3><p>Nodest provides a simple logging mechanism. The App and Controller base classes each contain a <strong>.log</strong> property that you can use.</p>
+<pre class="prettyprint source lang-javascript"><code>app.log(&quot;simple logging&quot;);</code></pre><p>This will produce the following line on the console.</p>
+<pre class="prettyprint source lang-sh"><code>3 Feb 08:00:04 - [app] [info] simple logging</code></pre><p>You'll notice the message is logged with the <strong>time</strong>, <strong>scope</strong> (app) and <strong>channel</strong> (info).
+You have finer control of your log messages. The call above logs your message to the <strong>info</strong> channel. 
+You can specify the channel you want to log to by calling a different function.</p>
+<pre class="prettyprint source lang-javascript"><code>app.log.info(&quot;this is information&quot;);
+app.log.debug(&quot;for debug messages&quot;); // controlled by Nodest.settings.verbose
+app.log.warn(&quot;you're getting too close&quot;);
+app.log.error(&quot;something bad happened&quot;);</code></pre><p>You're also able to control the scope your messages will use by <strong>scoping</strong> the log function. 
+There are a couple ways you'll want to use scoping. The long way is to do it inline. </p>
+<pre class="prettyprint source lang-javascript"><code>Nodest.Log.scoped(&quot;mycode&quot;).warn(&quot;this is a warning&quot;);</code></pre><p>As a shortcut, define your scoped log as a variable.</p>
+<pre class="prettyprint source lang-javascript"><code>var log = Nodest.Log.scoped(&quot;mycode&quot;);
+log(&quot;this is info&quot;);
+log.warn(&quot;this is a warning&quot;);</code></pre><p>This will produce...</p>
+<pre class="prettyprint source lang-sh"><code>3 Feb 08:00:04 - [mycode] [info] this is info
+3 Feb 08:00:04 - [mycode] [warn] this is a warning</code></pre><h3>Settings</h3><p>You can change the default behavior of certain Nodest features by applying different settings. 
+This is typically done before bootstrapping your application. Here is the current list of settings.</p>
+<pre class="prettyprint source lang-javascript"><code>{
+  verbose: false, // show debug logging
+  errors: {
+    expose: false // show detailed errors
+  },
+  service: {
+    templates: {
+      cache: true // cache HTML templates
+    }
+  }
+}</code></pre><p>To override the defaults, prior to bootstrapping the app...</p>
+<pre class="prettyprint source lang-javascript"><code>Nodest.applySettings({
+  verbose: true
+});
+...
+new Nodest.Bootstrapper(App).start((app) => { app.listen(3000) });</code></pre><h2>Middleware</h2><p>One of the goals for Nodest was to provide a very minimal layer around koa. 
+The Application class has a <strong>.koa</strong> property that can be used to configure middleware.</p>
+<p>Here's an example of how to install and use <strong>koa-session</strong> in your application. 
+Make sure you use <strong>npm</strong> to install the koa module first.</p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+const KoaSession = require(&quot;koa-session&quot;);
+
+class App extends Nodest.Application {  
+    init() {
+        this.koa.use(KoaSession(this.koa));
+        this.koa.use(KoaStaticFolder(&quot;./static&quot;));
+    }
+}
+
+module.exports = App;</code></pre><h3>Serve Static Content</h3><p>It's pretty common to want to serve static files like images or stylesheets from your app. 
+That's can be done pretty easily using <strong>koa-static-folder</strong> middleware. 
+Use <strong>npm</strong> to install the module first. Then in your App class...</p>
+<pre class="prettyprint source lang-javascript"><code>const Nodest = require(&quot;nodest&quot;);
+const KoaStaticFolder = require(&quot;koa-static-folder&quot;);
+
+class App extends Nodest.Application {  
+    init() {
+        this.koa.use(KoaStaticFolder(&quot;./static&quot;));
+    }
+}
+
+module.exports = App;</code></pre><p>That will allow your HTML files to reference static content under the <strong>/static</strong> folder of your root.
+For example...</p>
+<pre class="prettyprint source lang-html"><code>&lt;a href=&quot;/&quot;>&lt;img src=&quot;/static/images/logo.png&quot; />&lt;/a></code></pre><h2>Contributing</h2><p>Please submit all issues and pull requests to the <a href="http://github.com/alexmingoia/koa-router">alexmingoia/koa-router</a> repository!</p>
+<h2>Tests</h2><p>Run tests using <code>npm test</code>.</p>
+<h2>Support</h2><p>If you have any problem or suggestion please open an issue <a href="https://github.com/alexmingoia/koa-router/issues">here</a>.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

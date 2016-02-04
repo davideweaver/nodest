@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>templatemanager.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ActiveTemplate.html">ActiveTemplate</a><ul class='methods'><li data-type='method'><a href="ActiveTemplate.html#child">child</a></li><li data-type='method'><a href="ActiveTemplate.html#generate">generate</a></li><li data-type='method'><a href="ActiveTemplate.html#partial">partial</a></li><li data-type='method'><a href="ActiveTemplate.html#rawPartial">rawPartial</a></li></ul></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#cwd">cwd</a></li><li data-type='method'><a href="Application.html#deroute">deroute</a></li><li data-type='method'><a href="Application.html#extend">extend</a></li><li data-type='method'><a href="Application.html#init">init</a></li><li data-type='method'><a href="Application.html#listen">listen</a></li><li data-type='method'><a href="Application.html#route">route</a></li><li data-type='method'><a href="Application.html#routeFor">routeFor</a></li><li data-type='method'><a href="Application.html#use">use</a></li></ul></li><li><a href="Bootstrapper.html">Bootstrapper</a><ul class='methods'><li data-type='method'><a href="Bootstrapper.html#extend">extend</a></li><li data-type='method'><a href="Bootstrapper.html#start">start</a></li></ul></li><li><a href="Controller.html">Controller</a><ul class='methods'><li data-type='method'><a href="Controller.html#del">del</a></li><li data-type='method'><a href="Controller.html#error">error</a></li><li data-type='method'><a href="Controller.html#get">get</a></li><li data-type='method'><a href="Controller.html#getStatus">getStatus</a></li><li data-type='method'><a href="Controller.html#index">index</a></li><li data-type='method'><a href="Controller.html#options">options</a></li><li data-type='method'><a href="Controller.html#path">path</a></li><li data-type='method'><a href="Controller.html#post">post</a></li><li data-type='method'><a href="Controller.html#put">put</a></li><li data-type='method'><a href="Controller.html#rawTemplate">rawTemplate</a></li><li data-type='method'><a href="Controller.html#render">render</a></li><li data-type='method'><a href="Controller.html#respond">respond</a></li><li data-type='method'><a href="Controller.html#status">status</a></li><li data-type='method'><a href="Controller.html#template">template</a></li><li data-type='method'><a href="Controller.html#update">update</a></li><li data-type='method'><a href="Controller.html#write">write</a></li></ul></li><li><a href="Extension.html">Extension</a></li><li><a href="ExtensionManager.html">ExtensionManager</a></li><li><a href="Middleware.html">Middleware</a></li><li><a href="PathContext.html">PathContext</a></li><li><a href="Route.html">Route</a></li><li><a href="RouteMatch.html">RouteMatch</a><ul class='methods'><li data-type='method'><a href="RouteMatch.html#activate">activate</a></li><li data-type='method'><a href="RouteMatch.html#parseQueryParameters">parseQueryParameters</a></li></ul></li><li><a href="Router.html">Router</a><ul class='methods'><li data-type='method'><a href="Router.html#deroute">deroute</a></li><li data-type='method'><a href="Router.html#match">match</a></li><li data-type='method'><a href="Router.html#route">route</a></li></ul></li><li><a href="RouterManager.html">RouterManager</a><ul class='methods'><li data-type='method'><a href="RouterManager.html#match">match</a></li></ul></li><li><a href="Template.html">Template</a><ul class='methods'><li data-type='method'><a href="Template.html#generate">generate</a></li></ul></li><li><a href="TemplateManager.html">TemplateManager</a><ul class='methods'><li data-type='method'><a href="TemplateManager.html#getTemplate">getTemplate</a></li><li data-type='method'><a href="TemplateManager.html#setTemplateData">setTemplateData</a></li><li data-type='method'><a href="TemplateManager.html#unsetTemplateData">unsetTemplateData</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#log">log</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">templatemanager.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const Nodest = require("nodest");
+const Filesystem = require("fs");
+const Path = require("path");
+const Dot = require("dot");
+
+Dot.templateSettings.varname = "vars, data";
+Dot.templateSettings.strip = false;
+
+/**
+* Manager class for HTML templates
+* @class
+*/
+class TemplateManager {
+	
+	constructor(app) {
+		this.all = {};
+		
+		this._templates = {
+			'!': new Nodest.Template(app, null)
+		};
+		this._templateData = {};
+		
+		Object.defineProperty(this, "pathContext", {enumerable: true, value: app.pathContext});
+		Object.defineProperty(this, "app", {enumerable: true, value: app});
+	}
+	
+	/**
+	* Set default key-value pair for data objects to be sent to templates. i.e. "api_url" if you need it accessible from every template.
+	* @param {string} name Key which you're setting for the data object
+	* @param {any} value Value which you're setting for the specified key
+	* @return {any}
+	*/
+	setTemplateData(name, value) {
+		this._templateData[name] = value;
+		return value;
+	}
+
+	/**
+	* Unsets template data for the specified key
+	* @param {string} name Key which you're unsetting
+	*/
+	unsetTemplateData(name) {
+		delete this._templateData;
+	}
+
+	resolveTemplatePath(path) {
+		try { 
+			return Filesystem.readFileSync(path); 
+		} 
+		catch (e) {
+			return null;
+		}
+	}
+
+	/**
+	* Retrieves the template from the cache or loads the template and caches it
+	* @param {string} The template name (full path in the the app/templates directory).
+	* @param {optional boolean} raw Whether or not the template is "raw" (i.e. just an HTML string, no template engine required.) Defaults to false.
+	* @param {optional Nodest.PathContext} pathContext PathContext used to try resolving the given template.
+	* @return {Nodal.Template} The template instance
+	*/
+	getTemplate(name, raw, pathContext) {
+		raw = !!raw | 0; // coerce to 0, 1
+
+		if (!this._templates[name]) {
+			this._templates[name] = Array(2);
+		}
+
+		if(Nodest.settings.service.templates.cache &amp;&amp; this._templates[name][raw]) {
+			return this._templates[name][raw];
+		}
+
+		// use path to resolve filename
+		var contents = "";
+		var filename = name;
+		
+		// if we were passed pathContext, try using it
+		if (pathContext) {
+			filename = pathContext.resolve(name);
+		}
+		
+		// try given filename
+		contents = this.resolveTemplatePath(filename);
+		if (!contents) {
+			// try relative
+			filename = this.pathContext.resolve(name);
+			contents = this.resolveTemplatePath(filename);
+			if (!contents) {
+				// try root
+				filename = Path.join(this.app.cwd(), "./templates/", name);
+				contents = this.resolveTemplatePath(filename);
+				if (!contents) {
+					// try module
+					filename = Path.join(__dirname, "../templates", name);
+					contents = this.resolveTemplatePath(filename);
+				}
+			}
+		}
+
+		if (contents == null) {
+			return null;
+		}
+
+		this._templates[name][raw] = raw ? contents : Dot.template(contents);
+
+		return this._templates[name][raw];
+	}
+	
+	find(name) {
+		return this._templates[name];
+	}
+	
+	get data() {
+		return this._templateData;
+	}
+
+}
+
+module.exports = TemplateManager;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 04 2016 08:45:28 GMT-0500 (EST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
