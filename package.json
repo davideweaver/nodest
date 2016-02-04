@@ -7,8 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
   },
-  "author": "Dave Weaver <dave@nolinio.com> (http://nolinio.com/)",
-  "license": "ISC",
+  "author": "Dave Weaver",
+  "licenses": [
+  {
+    "type": "MIT",
+    "url": "https://github.com/davideweaver/nodest/blob/master/LICENSE"
+  },
   "devDependencies": {
     "jsdoc": "^3.4.0",
     "minami": "^1.1.1"
@@ -19,7 +23,6 @@
     "dot": "^1.0.3",
     "koa": "^1.1.2",
     "koa-compose": "^2.3.0",
-    "koa-static-folder": "^0.1.6",
     "merge": "^1.2.0",
     "routes": "^2.1.0",
     "statuses": "^1.2.1"
