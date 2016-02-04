@@ -1,6 +1,6 @@
 # nodest
 
-Minimalist framework on top of [koa](https://github.com/koajs/koa)
+Minimalist framework on top of [koa](https://github.com/koajs/koa), inspired by [nodal](https://github.com/keithwhor/nodal).
 
 * Simple application spinup
 * Express-style routing to controllers.
@@ -13,7 +13,7 @@ Minimalist framework on top of [koa](https://github.com/koajs/koa)
 
 ## Status
 
-Currently alpha, functionaly complete, tests being written.
+Currently alpha, functionally complete, tests being written.
 
 ## Installation
 
@@ -568,15 +568,15 @@ new Nodest.Bootstrapper(App).start((app) => { app.listen(3000) });
 
 ## Contributing
 
-Please submit all issues and pull requests to the [alexmingoia/koa-router](http://github.com/alexmingoia/koa-router) repository!
+Please submit all issues and pull requests to the [davideweaver/nodest](https://github.com/davideweaver/nodest) repository!
 
 ## Tests
 
-Run tests using `npm test`.
+Run tests using `npm test`. (not available yet)
 
 ## Support
 
-If you have any problem or suggestion please open an issue [here](https://github.com/alexmingoia/koa-router/issues).
+If you have any problem or suggestion please open an issue [here](https://github.com/davideweaver/nodest/issues).
 
 
 
