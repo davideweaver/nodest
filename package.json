@@ -1,6 +1,6 @@
 {
   "name": "nodest",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "NodeJS framework built on Koa",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,16 @@
     "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
   },
   "author": "Dave Weaver",
+	"keywords": [
+		"koa",
+		"controller",
+		"framework",
+		"middleware"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/davideweaver/nodest"
+	},
   "licenses": [
   {
     "type": "MIT",
