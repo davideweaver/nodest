@@ -1,6 +1,6 @@
 {
   "name": "nodest",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "NodeJS framework built on Koa",
   "main": "index.js",
   "scripts": {
