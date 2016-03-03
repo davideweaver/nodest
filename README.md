@@ -231,7 +231,7 @@ Be sure to register your API controller using the **:id** argument so Nodest kno
 
 ````javascript
 // register controller
-this.route("/contactss/:id?", "./contacts.controller.js");
+this.route("/contacts/:id?", "./contacts.controller.js");
 ````
 
 Now the controller. Notice the * before each method. This example uses ES6 generators to allow us to yield on our async Contacts API.
@@ -269,7 +269,7 @@ class ContactsController extends Nodest.ApiController {
 ### Async Controller Methods
 
 As you can see in the previous example, we use ES6 Generators to handle responses using our async Contacts API.
-By adding the ***** in front of our built-in methods, Nodest knows how to call them.
+By adding the * in front of our built-in methods, Nodest knows how to call them.
 Nodest also supports traditional callback-style APIs. 
 Just provide a **next** argument in the built-in methods like this example.
 
