@@ -229,9 +229,10 @@ Here is a complete REST-style example using mapped methods.
 
 Be sure to register your API controller using the **:id** argument so Nodest knows how to parse it. The **?** trailing the route means the **:id** argument is optional. This is important, otherwise calls to this controller will not be found unless the id is passed.
 
-```javascript
+````javascript
 // register controller
 this.route("/contactss/:id?", "./contacts.controller.js");
+````
 
 Now the controller. Notice the * before each method. This example uses ES6 generators to allow us to yield on our async Contacts API.
 
