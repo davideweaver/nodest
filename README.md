@@ -227,7 +227,13 @@ If the **:id** token exists in your route and resolved in the current request, t
 If the **:id** token is resolved then the value for that id can be found in the **this.vars.params.id** property of the controller.
 Here is a complete REST-style example using mapped methods.
 
-**NOTE** This example uses ES6 generators toallow us to yiled on our async Contacts API.
+Be sure to register your API controller using the **:id** argument so Nodest knows how to parse it. The **?** trailing the route means the **:id** argument is optional. This is important, otherwise calls to this controller will not be found unless the id is passed.
+
+```javascript
+// register controller
+this.route("/contactss/:id?", "./contacts.controller.js");
+
+Now the controller. Notice the * before each method. This example uses ES6 generators to allow us to yield on our async Contacts API.
 
 ````javascript
 const Contacts = require("./lib/contacts.es6");
