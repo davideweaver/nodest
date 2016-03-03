@@ -150,7 +150,7 @@ class ExampleController extends Nodest.Controller {
   index() {
     this.render(
       this.template("layout.html", "index.html")
-        .generate(this.params, {
+        .generate({
           title: "My Page",
           body: "This is my first post"
         })
