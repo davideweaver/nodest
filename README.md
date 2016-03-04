@@ -402,13 +402,13 @@ Use **npm** to install the module first. Then create your middleware class...
 const Nodest = require("nodest");
 const KoaStaticFolder = require("koa-static-folder");
 
-class TimerMiddleware extends Nodest.Middleware {
+class StaticMiddleware extends Nodest.Middleware {
   use() {
     return [ KoaStaticFolder("./static") ];
   }
 }
 
-module.exports = TimerMiddleware;
+module.exports = StaticMiddleware;
 ```
 
 **app.js**
