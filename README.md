@@ -53,7 +53,7 @@ The **Nodest.Bootstrapper** is used to start the app on port 3000.
 
 ## Typical Usage
 
-Clone the following bootstrap repositories for typical usage patterns:
+Clone the following bootstrap repositories for typical usage scenarios:
 
 **Bootstrap Web App**  https://github.com/davideweaver/nodest-bootstrap-web
 
