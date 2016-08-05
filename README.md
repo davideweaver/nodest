@@ -257,17 +257,17 @@ class ContactsController extends Nodest.ApiController {
 	
   * post() {
     var contact = Contacts.fromBody(this.ctx);
-    this.respond(yield Contacts.add(contact));
+    this.respondWithStatus(yield Contacts.add(contact), 201);
   }
 	
   * update() {
     var contact = Contacts.fromBody(this.ctx);
-    this.respond(yield Contacts.update(this.vars.params.id, contact));
+    this.respondWithStatus(yield Contacts.update(this.vars.params.id, contact), 200);
   }
 	
   * del() {
     yield Contacts.del(this.vars.params.id));
-    this.ctx.status(204);
+    this.respondWithNoContent();
   }
 }
 ````
