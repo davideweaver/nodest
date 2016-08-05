@@ -51,7 +51,12 @@ The controller override method **index** which will be called automatically when
 The **index()** method uses Koa's context to set the body of the response.
 The **Nodest.Bootstrapper** is used to start the app on port 3000.
 
+## Typical Usage
 
+Clone the following bootstrap repositories for typical usage patterns:
+
+[Bootstrap Web App](https://github.com/davideweaver/nodest-bootstrap-web)
+[Bootstrap Api App](https://github.com/davideweaver/nodest-bootstrap-api)
 
 ## Nodest and Koa
 
