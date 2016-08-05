@@ -55,9 +55,9 @@ The **Nodest.Bootstrapper** is used to start the app on port 3000.
 
 Clone the following bootstrap repositories for typical usage patterns:
 
-Bootstrap Web App (https://github.com/davideweaver/nodest-bootstrap-web)
+**Bootstrap Web App** https://github.com/davideweaver/nodest-bootstrap-web
 
-Bootstrap REST API App (https://github.com/davideweaver/nodest-bootstrap-rest)
+**Bootstrap REST API** App https://github.com/davideweaver/nodest-bootstrap-rest
 
 ## Nodest and Koa
 
